@@ -14,6 +14,7 @@ from .status import (
     screensaver_tasks,
     simple_gui_info,
 )
+from .modes import run_mode
 from .versions import client_update, client_version
 
 
