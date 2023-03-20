@@ -82,3 +82,6 @@ class Boinc:
 
     def get_client_update(self) -> dict:
         return client_update(client=self.rpc_client)
+    
+    def set_run_mode(self, mode="auto") -> dict:
+        return run_mode(client=self.rpc_client, mode=mode)
