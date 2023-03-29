@@ -88,5 +88,8 @@ class Boinc:
     def set_run_mode(self, mode="auto") -> dict:
         return run_mode(client=self.rpc_client, mode=mode)
     
-    def set_global_prefs_override(self, mode) -> dict:
-        return set_global_prefs_override(client=self.rpc_client, mode=mode)
+    def set_global_prefs_override(self, pref) -> dict:
+        return set_global_prefs_override(client=self.rpc_client, pref=pref)
+    
+    def set_cpu_usage_limit(self, limit=100) -> dict:
+        return set_global_prefs_override(client=self.rpc_client, pref="<cpu_usage_limit>" + limit + "</cpu_usage_limit>")
