@@ -91,5 +91,5 @@ class Boinc:
     def set_global_prefs_override(self, pref) -> dict:
         return set_global_prefs_override(client=self.rpc_client, pref=pref)
     
-    def set_cpu_usage_limit(self, limit=100) -> dict:
+    def set_cpu_usage_limit(self, limit="100") -> dict:
         return set_global_prefs_override(client=self.rpc_client, pref="<cpu_usage_limit>" + limit + "</cpu_usage_limit>")
