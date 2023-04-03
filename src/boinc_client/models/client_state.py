@@ -1,6 +1,10 @@
 from marshmallow import Schema, fields, post_load, pre_load
 
-from boinc_client.models.helpers import normalise_none_to_list
+from boinc_client.models.helpers import (
+    create_lists,
+    normalise_none_to_list,
+    replace_none_string,
+)
 from boinc_client.models.host_info import Host
 from boinc_client.models.project_status import ProjectState
 from boinc_client.models.result import Result
@@ -116,17 +120,25 @@ class GlobalPreferences(Schema):
     network_wifi_only = fields.Int()
     max_cpus = fields.Int()
 
+    @post_load
+    def _a_replace_none_string(self, data, **kwargs):
+        return replace_none_string(data)
+
 
 class State(Schema):
     host_info = fields.Nested(Host())
     net_stats = fields.Nested(NetStats())
     time_stats = fields.Nested(TimeStats())
-    project = fields.Nested(ProjectState(), data_key="project", load_default={})
+    projects = fields.Nested(
+        ProjectState(many=True), data_key="project", load_default=[]
+    )
     apps = fields.Nested(AppDetails(many=True), data_key="app", allow_none=True)
     app_versions = fields.Nested(
         AppVersion(many=True), data_key="app_version", allow_none=True
     )
-    workunits = fields.Nested(WorkUnit(many=True), data_key="workunit", allow_none=True)
+    work_units = fields.Nested(
+        WorkUnit(many=True), data_key="workunit", allow_none=True
+    )
     results = fields.Nested(Result(many=True), data_key="result", load_default=[])
     platform = fields.Str()
     platform_name = fields.Str()
@@ -138,10 +150,13 @@ class State(Schema):
 
     @pre_load
     def _a_create_keys(self, data, **kwargs):
-        keys_to_create = ["app", "app_version", "workunit"]
-        for k in keys_to_create:
-            if k not in data:
-                data[k] = []
+        return create_lists(data, ["app", "app_version", "project", "workunit"])
+
+    @pre_load
+    def _b_wrap_dict(self, data, **kwargs):
+        data["project"] = (
+            [data["project"]] if type(data["project"]) is not list else data["project"]
+        )
         return data
 
 

@@ -147,3 +147,44 @@ def test_container_update(boinc_client):
     result = boinc_client.get_client_update()
     assert result
     assert "update" in result
+
+
+@mark.authenticated
+@mark.integration
+def test_can_attach_and_detach_project(boinc_client, project_weak_key):
+    boinc_client.attach_project(
+        "World Community Grid",
+        "https://www.worldcommunitygrid.org/",
+        project_weak_key,
+    )
+    assert boinc_client.poll_attach_project()["project_attach_reply"]["error_num"] == 0
+    assert (
+        boinc_client.get_client_state()["client_state"]["projects"][0]["project_name"]
+        == "World Community Grid"
+    )
+    boinc_client.detach_project("https://www.worldcommunitygrid.org/")
+    assert len(boinc_client.get_client_state()["client_state"]["projects"]) == 0
+
+
+@mark.authenticated
+@mark.integration
+def test_can_attach_to_multiple_projects(boinc_client, project_weak_key):
+    boinc_client.attach_project(
+        "World Community Grid",
+        "https://www.worldcommunitygrid.org/",
+        project_weak_key,
+    )
+    boinc_client.attach_project(
+        "Space Community Grid",
+        "https://www.spacecommunitygrid.org/",
+        project_weak_key,
+    )
+    assert boinc_client.poll_attach_project()["project_attach_reply"]["error_num"] == 0
+    assert (
+        boinc_client.get_client_state()["client_state"]["projects"][0]["project_name"]
+        == "Space Community Grid"
+    )
+    assert (
+        boinc_client.get_client_state()["client_state"]["projects"][1]["project_name"]
+        == "World Community Grid"
+    )
