@@ -60,7 +60,11 @@ class RpcClient:
         try:
             self.socket.sendall(str.encode(buf))
         except (socket.error, socket.herror, socket.gaierror, socket.timeout):
-            raise
+            self.socket = self.create_connection()
+            try:
+                self.socket.sendall(str.encode(buf))
+            except (socket.error, socket.herror, socket.gaierror, socket.timeout):
+                raise
 
         # Receive the response
         response = ""
