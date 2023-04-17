@@ -20,8 +20,7 @@ class RpcClient:
         self.hostname = hostname
         self.port = port
         self.timeout = timeout
-        self.password = password
-        self.socket = self.create_connection()
+        self.password = password        
 
     def create_connection(self) -> socket:
         return socket.create_connection(
@@ -58,6 +57,7 @@ class RpcClient:
         # Send the request
         buf = f"<boinc_gui_rpc_request>\n{req_string}\n</boinc_gui_rpc_request>\003"
         try:
+            self.socket = self.create_connection()
             self.socket.sendall(str.encode(buf))
         except (socket.error, socket.herror, socket.gaierror, socket.timeout):
             raise
