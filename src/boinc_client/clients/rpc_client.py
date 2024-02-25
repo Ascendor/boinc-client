@@ -22,11 +22,13 @@ class RpcClient:
         self.hostname = hostname
         self.port = port
         self.timeout = timeout
+
         self.password = password
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket = self.create_connection()
         self.socket.settimeout(self.timeout)
         self.create_connection()
-        self._call_lock = threading.Lock()
+        self._call_lock = threading.Lock()        
 
     def create_connection(self) -> socket:
         return self.socket.connect((self.hostname, self.port))
