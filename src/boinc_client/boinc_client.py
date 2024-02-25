@@ -1,7 +1,25 @@
 from boinc_client.clients.rpc_client import RpcClient
 
 from .messages import message_count, messages, public_notices
-from .projects import all_projects, attach_project, detach_project, poll_attach_project
+from .preferences import (
+    get_global_prefs_file,
+    get_global_prefs_override,
+    get_global_prefs_working,
+    read_global_prefs_override,
+    set_global_prefs_override,
+)
+from .projects import (
+    all_projects,
+    attach_project,
+    detach_project,
+    poll_attach_project,
+    project_allow_more_work,
+    project_no_more_work,
+    reset_project,
+    resume_project,
+    suspend_project,
+    update_project,
+)
 from .results import old_results, results
 from .stats import daily_network_transfers, project_stats
 from .status import (
@@ -25,7 +43,9 @@ class Boinc:
     def __init__(self, rpc_client: RpcClient):
         self.rpc_client = rpc_client
 
+    ###########
     # Messages
+    ###########
     def get_messages(self, start: int = 0) -> dict:
         return messages(client=self.rpc_client, start=start)
 
@@ -35,25 +55,54 @@ class Boinc:
     def get_public_notices(self, start: int = 0) -> dict:
         return public_notices(client=self.rpc_client, start=start)
 
+    ###########
     # Projects
+    ###########
     def get_all_projects(self) -> dict:
         return all_projects(client=self.rpc_client)
 
+    def attach_project(self, name: str, url: str, key: str) -> dict:
+        return attach_project(self.rpc_client, name, url, key)
+
+    def poll_attach_project(self):
+        return poll_attach_project(self.rpc_client)
+
+    def update_project(self, url: str) -> dict:
+        return update_project(self.rpc_client, url)
+
+    def detach_project(self, url: str) -> dict:
+        return detach_project(self.rpc_client, url)
+
+    def suspend_project(self, url: str) -> dict:
+        return suspend_project(self.rpc_client, url)
+
+    def resume_project(self, url: str) -> dict:
+        return resume_project(self.rpc_client, url)
+
+    def reset_project(self, url: str) -> dict:
+        return reset_project(self.rpc_client, url)
+
+    ##########
     # Results
+    ##########
     def get_results(self, active_only: bool = False) -> dict:
         return results(client=self.rpc_client, active_only=active_only)
 
     def get_old_results(self) -> dict:
         return old_results(client=self.rpc_client)
 
+    ########
     # Stats
+    ########
     def get_network_stats(self) -> dict:
         return daily_network_transfers(client=self.rpc_client)
 
     def get_project_stats(self) -> dict:
         return project_stats(client=self.rpc_client)
 
+    #########
     # Status
+    #########
     def get_client_state(self) -> dict:
         return client_state(client=self.rpc_client)
 
@@ -78,7 +127,18 @@ class Boinc:
     def get_screensaver_tasks(self) -> dict:
         return screensaver_tasks(client=self.rpc_client)
 
+    ########
+    # Tasks
+    ########
+    def project_no_more_work(self, url: str) -> dict:
+        return project_no_more_work(client=self.rpc_client, project_url=url)
+
+    def project_allow_more_work(self, url: str) -> dict:
+        return project_allow_more_work(client=self.rpc_client, project_url=url)
+
+    ###########
     # Versions
+    ###########
     def get_client_version(self) -> dict:
         return client_version(client=self.rpc_client)
 
@@ -86,20 +146,29 @@ class Boinc:
         return client_update(client=self.rpc_client)
     
 
-    def attach_project(self, name: str, url: str, key: str) -> dict:
-        return attach_project(self.rpc_client, name, url, key)
+    ##############
+    # Preferences
+    ##############
+    def get_global_prefs_file(self) -> dict:
+        return get_global_prefs_file(self.rpc_client)
 
-    def poll_attach_project(self):
-        return poll_attach_project(self.rpc_client)
+    def get_global_prefs_override(self) -> dict:
+        return get_global_prefs_override(self.rpc_client)
 
     def detach_project(self, url: str) -> dict:
         return detach_project(self.rpc_client, url)
 
     def set_run_mode(self, mode="auto") -> dict:
         return run_mode(client=self.rpc_client, mode=mode)
-    
-    def set_global_prefs_override(self, pref) -> dict:
-        return set_global_prefs_override(client=self.rpc_client, pref=pref)
-    
+        
     def set_cpu_usage_limit(self, limit="100") -> dict:
         return set_global_prefs_override(client=self.rpc_client, pref="<cpu_usage_limit>" + limit + "</cpu_usage_limit>")
+
+    def set_global_prefs_override(self, pref_override: dict) -> None:
+        return set_global_prefs_override(self.rpc_client, pref_override)
+
+    def get_global_prefs_working(self) -> dict:
+        return get_global_prefs_working(self.rpc_client)
+
+    def read_global_prefs_override(self) -> dict:
+        return read_global_prefs_override(self.rpc_client)

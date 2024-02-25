@@ -53,40 +53,10 @@
                 <description>Learn about the projects hosted at World Community Grid</description>
                 <url>https://www.worldcommunitygrid.org/research/viewAllProjects.do</url>
             </gui_url>
-            <gui_url>
-                <name>News and Updates</name>
-                <description>The latest information about World Community Grid and its research projects</description>
-                <url>https://www.worldcommunitygrid.org/about_us/displayNews.do</url>
-            </gui_url>
-            <gui_url>
-                <name>My Contribution</name>
-                <description>Your statistics and settings</description>
-                <url>https://www.worldcommunitygrid.org/ms/viewMyMemberPage.do</url>
-            </gui_url>
-            <gui_url>
-                <name>Results Status</name>
-                <description>View the status of your assigned work</description>
-                <url>https://www.worldcommunitygrid.org/ms/viewBoincResults.do</url>
-            </gui_url>
-            <gui_url>
-                <name>Device Profiles</name>
-                <description>Update your device settings</description>
-                <url>https://www.worldcommunitygrid.org/ms/device/viewProfiles.do</url>
-            </gui_url>
-            <gui_url>
-                <name>Forums</name>
-                <description>Visit the World Community Grid forums</description>
-                <url>https://www.worldcommunitygrid.org/forumLogin.do</url>
-            </gui_url>
-            <gui_url>
-                <name>Help</name>
-                <description>Search for help in our help system</description>
-                <url>https://www.worldcommunitygrid.org/help/viewHelp.do</url>
-            </gui_url>
         </gui_urls>
         <sched_priority>-1.041667</sched_priority>
-        <upload_backoff>12843.957831</upload_backoff>
         <project_files_downloaded_time>0.000000</project_files_downloaded_time>
         <project_dir>/var/lib/boinc/projects/www.worldcommunitygrid.org</project_dir>
+        <suspended_via_gui></suspended_via_gui>
     </project>
 </projects>

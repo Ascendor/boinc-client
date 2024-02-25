@@ -12,20 +12,29 @@ Everything should be covered by tests, this project has been put together follow
 Check all the tests are executing properly:
 ```bash
 # Run only the Unit tests
-poetry run pytest -m "not integration"
+make unittest
 
 # Run only the Integration tests
-poetry run pytest -m integration
+make integration
 
 # Run all tests (recommended)
-poetry run pytest
+make test
+```
+
+To ensure all code is covered by tests, a coverage report can be generated. This command will fail if coverage is not 100% and highlight where tests are missing
+```bash
+# When developing with unit tests only
+make unittest coverage
+
+# When creating integration tests
+make test coverage
 ```
 
 Once changes have been made, use `black` and `isort` to format all the files:
 ```bash
 # Format with black
-poetry run black src/ tests/
+make fmt
 
-# Format with isort
-poetry run isort --profile=black src/ tests/
+# If adding XML files, they can also be formatted
+make fmtxml
 ```
