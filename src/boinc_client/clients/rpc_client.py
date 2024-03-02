@@ -24,7 +24,7 @@ class RpcClient:
         self.timeout = timeout
 
         self.password = password
-#        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket = self.create_connection()
         self.socket.settimeout(self.timeout)
         self.create_connection()
