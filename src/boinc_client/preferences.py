@@ -22,7 +22,7 @@ def get_global_prefs_override(client: RpcClient):
     rpc_resp = client.make_request("<get_global_prefs_override/>")
     rpc_json = xmltodict.parse(rpc_resp)
     try:
-        return GlobalPreferenceOverrides().load(rpc_json)
+        return GlobalPreferenceOverrides().load(rpc_json, unknown=INCLUDE))
     except ValidationError:
         return GenericResponse().load(rpc_json)
 
@@ -45,7 +45,7 @@ def set_global_prefs_override(client: RpcClient, override: dict):
         </set_global_prefs_override>"""
     )
     rpc_json = xmltodict.parse(rpc_resp)
-    return GenericResponse().load(rpc_json)
+    return GenericResponse().load(rpc_json, unknown=INCLUDE)
 
 
 def read_global_prefs_override(client: RpcClient):
